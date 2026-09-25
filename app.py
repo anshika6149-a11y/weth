@@ -40,7 +40,7 @@ t = {
         "title": "AgriCast - Panchayat Weather & Crop Intelligence",
         "login_title": "Farmer / Officer Login & Location Setup",
         "login_btn": "Enter Dashboard",
-        "success_msg": "Login successful! Redirecting to Weather Downscaling...",
+        "success_msg": "Login successful! Now you can select pages from the sidebar.",
     },
     "हिंदी": {
         "nav_home": "🏠 लॉगिन और क्षेत्र चयन",
@@ -49,16 +49,12 @@ t = {
         "title": "एग्रीकास्ट - पंचायत-स्तरीय मौसम और फसल खुफिया प्रणाली",
         "login_title": "किसान / अधिकारी लॉगिन और लोकेशन सेटअप",
         "login_btn": "डैशबोर्ड में प्रवेश करें",
-        "success_msg": "लॉगिन सफल! मौसम डाउनस्केलिंग पेज पर रीडायरेक्ट किया जा रहा है...",
+        "success_msg": "लॉगिन सफल! अब आप साइडबार से कोई भी पेज चुन सकते हैं।",
     }
 }
 
-# Page State Management
-if 'page' not in st.session_state:
-    st.session_state['page'] = t[lang]["nav_home"]
-
 # Navigation Menu
-page = st.sidebar.radio("Navigation", [t[lang]["nav_home"], t[lang]["nav_weather"], t[lang]["nav_advisory"]], key="page")
+page = st.sidebar.radio("Navigation", [t[lang]["nav_home"], t[lang]["nav_weather"], t[lang]["nav_advisory"]])
 
 # --- PAGE 1: LOGIN & LOCATION SELECTION ---
 if page == t[lang]["nav_home"]:
@@ -80,14 +76,11 @@ if page == t[lang]["nav_home"]:
             st.session_state['logged_in'] = True
             st.session_state['panchayat'] = panchayat_name
             st.success(t[lang]["success_msg"])
-            # Automatically switch to the next page (Weather Downscaling)
-            st.session_state['page'] = t[lang]["nav_weather"]
-            st.rerun()
 
     with col2:
         st.markdown("### 🌾 Welcome to AgriCast")
         st.markdown("Yeh platform low-resolution block forecasts ko high-resolution panchayat-level par downscale karta hai taaki kisanon ko sateek mausam ki jankari mil sake.")
-        st.info("Kripya aage badhne ke liye apni sahi location darj karein aur 'Enter Dashboard' par click karein.")
+        st.info("Kripya aage badhne ke liye apni sahi location darj karein aur 'Enter Dashboard' par click karein, fir sidebar se menu select karein.")
 
 # --- PAGE 2: WEATHER DOWNSCALING ---
 elif page == t[lang]["nav_weather"]:
