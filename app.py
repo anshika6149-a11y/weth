@@ -18,17 +18,18 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Initialize Session State to pass data smoothly across tabs
+# Initialize Session State for data synchronization across pages
 if 'pred_temp' not in st.session_state:
     st.session_state['pred_temp'] = 36.5
 if 'pred_rain' not in st.session_state:
     st.session_state['pred_rain'] = 50.0
 
-# Tabs Navigation
-tab1, tab2, tab3 = st.tabs(["🏠 Home / Overview", "🌦️ Weather Downscaling", "🚜 Smart Agro-Advisory"])
+# --- SIDEBAR NAVIGATION MENU ---
+st.sidebar.title("🧭 Navigation Menu")
+page = st.sidebar.radio("Select Page", ["🏠 Home / Overview", "🌦️ Weather Downscaling", "🚜 Smart Agro-Advisory"])
 
-# --- TAB 1: HOME ---
-with tab1:
+# --- PAGE 1: HOME / OVERVIEW ---
+if page == "🏠 Home / Overview":
     st.markdown('<p class="main-title">🌾 Panchayat-Level Weather Downscaling & Agro-Advisory System</p>', unsafe_allow_html=True)
     st.markdown("### SIH26074 - Ministry of Earth Sciences (MoES)")
     st.markdown("---")
@@ -38,7 +39,7 @@ with tab1:
         <p class="sub-text">
         Yeh application low-resolution <b>Block-level</b> weather forecasts ko high-resolution 
         <b>Panchayat/Village-level</b> par downscale karti hai taaki kisanon ko sateek aur local 
-        mausam ki jankari mil sake.
+        mausam ki jankari mil sake. Sidebar se apna desirable page select karein.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -48,8 +49,8 @@ with tab1:
     col2.metric("Category", "Software Solution")
     col3.metric("Domain", "Agriculture & Rural Dev")
 
-# --- TAB 2: WEATHER DOWNSCALING ---
-with tab2:
+# --- PAGE 2: WEATHER DOWNSCALING ---
+elif page == "🌦️ Weather Downscaling":
     st.markdown('<p class="main-title">🌦️ Spatial Weather Downscaling (Block to Panchayat)</p>', unsafe_allow_html=True)
     st.markdown("Enter coarse block parameters and panchayat topography to generate high-res forecasts.")
     st.markdown("---")
@@ -78,8 +79,8 @@ with tab2:
         m1.metric(label="Panchayat Temperature", value=f"{pred_temp} °C")
         m2.metric(label="Panchayat Rainfall", value=f"{pred_rain} mm")
 
-# --- TAB 3: AGRO-ADVISORY ---
-with tab3:
+# --- PAGE 3: SMART AGRO-ADVISORY ---
+elif page == "🚜 Smart Agro-Advisory":
     st.markdown('<p class="main-title">🚜 Agro-Meteorological Advisory Services</p>', unsafe_allow_html=True)
     st.markdown("Get custom farming recommendations based on downscaled micro-climate data.")
     st.markdown("---")
@@ -89,7 +90,7 @@ with tab3:
         st.subheader("📍 Location & Conditions")
         selected_panchayat = st.selectbox("Select Panchayat", ["Panchayat 1 (Sadar)", "Panchayat 2", "Panchayat 3"])
         
-        # Automatically pull values from session state
+        # Automatically pull synchronized values from session state
         input_temp = st.number_input("Current Panchayat Temp (°C)", value=float(st.session_state['pred_temp']))
         input_rain = st.number_input("Current Panchayat Rainfall (mm)", value=float(st.session_state['pred_rain']))
         
